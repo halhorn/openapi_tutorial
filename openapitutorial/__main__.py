@@ -6,7 +6,7 @@ def setup_app():
         'openapitutorial',
         host='0.0.0.0',
         port=10080,
-        specification_dir='apispec/',
+        specification_dir='../apispec/',
         debug=True,
         options={
             'swagger_ui': True,
