@@ -1,0 +1,149 @@
+openapi: 3.0.0
+info:
+  title: OpenAPI Tutorial
+  description: OpenAPI Tutorial by halhorn
+  version: 1.0.0
+servers:
+  - url: https://example.com/api/v1
+    description: プロダクション API
+  - url: http://{host}:{port}/api/v1
+    description: 開発用
+    variables:
+      host:
+        default: localhost
+      port:
+        default: '10080'
+security:
+  - api_key: []  # デフォルトのセキュリティ
+paths:
+  /health:
+    get:
+      operationId: openapitutorial.controller.health.call
+      summary: サーバーの状態を返します
+      description: サーバーの状態を返します。
+      responses:
+        '200':
+          description: サーバーは正常に動作しています
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/get_health_response'
+      security: []
+  /users:
+    post:
+      operationId: openapitutorial.controller.post_users.call
+      tags:
+        - users
+      summary: ユーザーを追加します
+      description: ユーザーを追加します。 user_id は自動で割り振られます。
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      responses:
+        '201':
+          description: ユーザーの作成に成功しました。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+  /users/{user_id}:
+    get:
+      operationId: openapitutorial.controller.get_user.call
+      tags:
+        - users
+      summary: ユーザー情報を取得します
+      description: ユーザー情報を取得します。
+      parameters:
+        - name: user_id
+          in: path
+          description: 取得対象のユーザー ID
+          required: true
+          schema:
+            $ref: '#/components/schemas/user_id'
+      responses:
+        '200':
+          description: 取得に成功しました。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+components:
+  schemas:
+    # スカラー共通系
+    user_id:
+      description: ユーザー識別子
+      type: string
+      pattern: '[a-zA-Z0-9_-]+'
+      maxLength: 127
+      example: halhorn
+      readOnly: true
+    gendar:
+      description: 性別
+      type: string
+      enum:
+        - male
+        - female
+        - other
+    interest:
+      type: string
+      enum:
+        - photo
+        - bouldering
+        - trip
+        - cycling
+        - birdwatching
+    # オブジェクト共通系
+    user:
+      description: ユーザー
+      type: object
+      properties:
+        user_id:
+          $ref: '#/components/schemas/user_id'
+        name:
+          description: 氏名
+          example: 信田春満
+          type: string
+          maxLength: 127
+        mail_address:
+          description: メールアドレス
+          type: string
+          format: email
+        age:
+          description: 年齢
+          example: 32
+          type: integer
+          minimum: 0
+        gendar:
+          $ref: '#/components/schemas/gendar'
+        interests:
+          type: array
+          items:
+            $ref: '#/components/schemas/interest'
+      required:
+        - user_id
+        - name
+        - mail_address
+        - age
+        - gendar
+    # 個別エンドポイント用
+    get_health_response:
+      description: サーバーの状態のレスポンス
+      type: object
+      properties:
+        status:
+          type: string
+          enum:
+            - ok
+      required:
+        - status
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      x-apikeyInfoFunc: openapitutorial.controller.auth.call
+tags:
+  - name: users
+    description: ユーザーに関する API 群です。
