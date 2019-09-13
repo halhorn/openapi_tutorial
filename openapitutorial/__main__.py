@@ -13,6 +13,10 @@ def setup_app():
         },
     )
     app.add_api(
+        'v0/openapi.yaml',
+        validate_responses=True,
+    )
+    app.add_api(
         'v1/openapi.yaml',
         validate_responses=True,
     )
