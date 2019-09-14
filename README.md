@@ -4,7 +4,7 @@ OpenAPI 3.0 を使って python サーバーを作成するチュートリアル
 
 # Install
 ```sh
-git clone git@github.com:halhorn/openapi_tutorial.git
+git clone https://github.com/halhorn/openapi_tutorial.git
 cd openapi_tutorial
 pyenv install
 pip install -U pip pipenv
