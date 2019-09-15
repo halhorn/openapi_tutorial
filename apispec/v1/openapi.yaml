@@ -56,6 +56,13 @@ paths:
         - users
       summary: ユーザーを追加します
       description: ユーザーを追加します。 user_id は自動で割り振られます。
+      parameters:
+        - name: user_id
+          in: path
+          description: 取得対象のユーザー ID
+          required: true
+          schema:
+            $ref: '#/components/schemas/user_id'
       requestBody:
         content:
           application/json:
@@ -78,6 +85,7 @@ components:
       pattern: '[a-zA-Z0-9_-]+'
       maxLength: 127
       example: halhorn
+      readOnly: true
     gendar:
       description: 性別
       type: string
