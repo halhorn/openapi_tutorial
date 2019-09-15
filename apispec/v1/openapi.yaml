@@ -29,26 +29,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/get_health_response'
       security: []
-  /users:
-    post:
-      operationId: openapitutorial.controller.post_users.call
-      tags:
-        - users
-      summary: ユーザーを追加します
-      description: ユーザーを追加します。 user_id は自動で割り振られます。
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/user'
-        required: true
-      responses:
-        '201':
-          description: ユーザーの作成に成功しました。
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/user'
   /users/{user_id}:
     get:
       operationId: openapitutorial.controller.get_user.call
@@ -70,6 +50,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/user'
+    post:
+      operationId: openapitutorial.controller.post_user.call
+      tags:
+        - users
+      summary: ユーザーを追加します
+      description: ユーザーを追加します。 user_id は自動で割り振られます。
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+        required: true
+      responses:
+        '201':
+          description: ユーザーの作成に成功しました。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
 components:
   schemas:
     # スカラー共通系
@@ -79,7 +78,6 @@ components:
       pattern: '[a-zA-Z0-9_-]+'
       maxLength: 127
       example: halhorn
-      readOnly: true
     gendar:
       description: 性別
       type: string
